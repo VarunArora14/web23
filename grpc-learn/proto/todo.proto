@@ -5,7 +5,7 @@ package todoPackage;
 // todo service => https://www.youtube.com/watch?v=Yw4rkaTc0f8
 service Todo {
   rpc createTodo(TodoText) returns (TodoItem);
-  rpc ReadTodos(Empty) returns (stream TodoItem);
+  rpc readTodos(Empty) returns (stream TodoItem);
 }
 
 message TodoItem {
