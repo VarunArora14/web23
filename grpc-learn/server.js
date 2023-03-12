@@ -21,8 +21,9 @@ server.addService(todoPackage.Todo.service, {
 
 server.bindAsync("0.0.0.0:40000", grpc.ServerCredentials.createInsecure(),  (err, port) => {
   if (err!=null) {
-    return console.log(err)
+    return err;
   }
+  console.log("Server started on port: " + port);
   server.start(); // make sure to start the server after binding it to a port
 });
 // http/2 is the default protocol for grpc and needs credentials to be passed in, grpc allows to bypass this by passing in insecure credentials
@@ -35,9 +36,19 @@ server.bindAsync("0.0.0.0:40000", grpc.ServerCredentials.createInsecure(),  (err
 // methods in grpc alwasys take 2 parameters, call(call that made, not the actual request, the tcp connection) and callback(u can use to send response)
 // callback is a function client is listening to
 
+const todos = [];
 function createTodo(call, callback) {
   // create a todo
+  const todoItem = {
+    id:todos.length+1,
+    text:call.request.text,
+  }
+  todos.push(todoItem);
+  console.log('call executed');
   console.log(call);
+
+  // tell the client, we are done by using the callback
+  callback(null, todoItem);
 }
 
 function readTodos(call, callback) {}
